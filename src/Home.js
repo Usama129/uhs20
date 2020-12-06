@@ -1,15 +1,19 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 
+
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
+
     }
 
     render() {
+        let tableSize = this.props.isMobile ? "sm" : ""
         return(
             <div>
-                <Table striped bordered hover>
+                <Table striped bordered hover size={tableSize}>
                     <thead>
                     <tr>
                         <th width="60px">#</th>

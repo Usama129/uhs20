@@ -1,16 +1,25 @@
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
-import {Navbar, Nav, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
+import {HashRouter, BrowserRouter, Link, Route, Redirect} from 'react-router-dom'
+import {Navbar, Nav, NavItem, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
 import React from "react";
 import Home from "./Home";
 import Welcome from "./Welcome";
 import KE from './img/kingedward.png';
+import { useMediaQuery } from 'react-responsive'
+
 
 function App() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)'
+  })
+  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+  const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
   return (
-    <Router>
+    <BrowserRouter basename="/">
       <div className="App">
         <header className="App-header">
           <div className="left-header">
@@ -27,14 +36,16 @@ function App() {
           </div>
         </header>
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/home">UHS</Navbar.Brand>
+          <Navbar.Brand>UHS</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="/home">
+            <Nav className="mr-auto uhs-nav">
+              <Nav.Link href="/home" >
                 Home
               </Nav.Link>
-              <Nav.Link href="/welcome">Welcome</Nav.Link>
+              <Nav.Link href="/welcome">
+                Welcome
+              </Nav.Link>
               <Nav.Link href="#link">Programme</Nav.Link>
               <Nav.Link href="#link">Directory</Nav.Link>
               <Nav.Link href="#link">Committee</Nav.Link>
@@ -53,10 +64,15 @@ function App() {
             </Form>
           </Navbar.Collapse>
         </Navbar>
-        <Route path="/home" component={Home}/>
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
+        <Route path="/home" render={(props) => (
+            <Home {...props} isMobile={isTabletOrMobile} />
+        )}/>
         <Route path="/welcome" component={Welcome}/>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 
